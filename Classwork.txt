@@ -1,0 +1,83 @@
+Use employee_information_w2
+GO
+
+select Employee_Id, First_Name, Last_Name, Salary
+from dbo.Employees
+where Employee_Id > 149
+
+select Employee_Id, First_Name, Last_Name, Salary
+from dbo.Employees
+where Employee_Id = 149
+
+select Employee_Id, First_Name, Last_Name, Salary
+from dbo.Employees
+where Employee_Id >= 149
+
+select Employee_Id, First_Name, Last_Name, Salary
+from dbo.Employees
+where Employee_Id <> 149
+-- <> is equivalent to != (Not equal to)
+
+select Employee_Id, First_Name, Last_Name, Salary
+from dbo.Employees
+where Employee_Id >= 149
+or --satisfies all
+Employee_Id <= 200
+
+select Employee_Id, First_Name, Last_Name, Salary
+from dbo.Employees
+where Employee_Id >= 149
+and --satisifies only conditioned range
+Employee_Id <= 200
+
+select Employee_Id, First_Name, Last_Name, Salary
+from dbo.Employees
+where Employee_Id between 149 and 200
+--same as inclusive >= and <=
+
+select Employee_Id, First_Name, Last_Name, Salary
+from dbo.Employees
+where Employee_Id in (101, 102, 174)
+
+select Department_id, Employee_Id, First_Name, Phone_Number
+from dbo.Employees
+where Phone_Number like '__.____.______' 
+select * from dbo.Employees
+
+select Employee_Id, First_Name, Last_Name, Salary, Commission_pct
+from dbo.Employees
+where Commission_pct is NOT NULL
+
+select Employee_Id, First_Name, Last_Name, Salary
+from dbo.Employees
+where Employee_Id not between 100 and 104
+order by First_Name, Salary
+
+select Department_id, Employee_Id, First_Name
+from dbo.Employees
+order by Department_id, Employee_Id desc, First_Name
+
+select Department_id, Employee_Id, First_Name
+from dbo.Employees
+where First_Name like '%n%r'
+
+select Department_id, Employee_Id, First_Name
+from dbo.Employees
+where First_Name like '_r%'
+--has min letters w and second index r
+
+select Department_id, Employee_Id, First_Name
+from dbo.Employees
+where First_Name like '_r_%'
+-- has 2 other syllables other than r and length is not defined
+
+select Department_id, Employee_Id, First_Name
+from dbo.Employees
+where First_Name like '_$_%' escape '_'
+-- here underscore is used as special character other than empty spaces.
+-- so excape is used to mention the change of use. 
+-- we use $ or / or any other character which is least used 
+
+select Department_id, Employee_Id, First_Name
+from dbo.Employees
+where salary > 5000 and First_Name like '_r_%'

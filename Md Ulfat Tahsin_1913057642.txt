@@ -1,0 +1,59 @@
+use employee_information_w2
+Go
+LAB-Week 03 (Lecture 1)
+/*Activity 1: 
+Display the employee last name, job ID, and start date of employees hired between
+February 20, 1998, and May 1, 1998. Order the query in ascending order by start date.*/
+
+select Last_Name, Job_Id, Hire_Date
+from Employees
+where Hire_Date BETWEEN '1998-02-20' AND '1998-05-01'
+order by Hire_Date
+
+
+/*Activity 2:
+Display the last name and department number of all employees in departments 20 and
+50 in alphabetical order by name.*/
+select Last_Name, Department_id
+from Employees
+where Department_id=20 
+OR 
+Department_id=50 
+order by First_Name, Last_name
+/*Alternative Way*/
+select Last_Name, Department_id
+from Employees
+where Department_id BETWEEN 20 AND 50
+order by First_Name, Last_name
+
+
+LAB-Week 03 (Lecture 2)
+/*Activity 01:
+Display the last name and hire date of every employee who was hired in 1994.*/
+
+select Last_Name, Hire_Date
+from Employees
+where Hire_Date LIKE '1994-__-__'
+/*Alternative Way*/
+select Last_Name, Hire_Date
+from Employees
+where Hire_Date LIKE '1994%'
+
+/*Activity 2:
+Display the last name, salary, and commission for all employees who earn commissions.
+Sort data in descending order of salary and commissions.Title.*/
+
+select Last_Name, Salary, Commission_pct
+from Employees
+where Commission_pct IS NOT NULL
+order by Salary desc, Commission_pct desc, job_title
+
+/*Activity 03:
+Display the last name of all employees who have an a and an e in their last name.*/
+
+select Last_Name
+from Employees
+where Last_Name LIKE '%a%' 
+OR
+Last_Name LIKE '%e%'
+/*Can also be done in an elongated form and several other ways but this is the shorest query and satisfies all sorts of 'a' 'e' name conditions*/
