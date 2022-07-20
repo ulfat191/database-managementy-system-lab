@@ -1,0 +1,73 @@
+Use employee_information_w2
+GO
+/*LAB-Week 04 (Lecture 1)
+Activity 01:
+Write a query to display the last name, department number, and department name for all
+employees.*/
+
+SELECT Last_Name, Employees.Department_id AS 'Deapartment Number', Departments.Department_Name
+FROM Employees 
+LEFT JOIN Departments
+ON (Employees.Department_id=Departments.Department_id)
+/*LEFT JOIN or LEFT OUTER JOIN selects all even NULL ones*/
+
+/*Activity 02:
+Write a query to display the employee last name, department name, location ID, and city
+of all employees who earn a commission.*/
+
+SELECT Last_Name, Departments.Department_Name, Departments.Location_id, Locations.City
+FROM Employees
+LEFT JOIN Departments
+ON (Employees.Department_id=Departments.Department_id)
+LEFT JOIN Locations
+ON (Departments.Location_id=Locations.Location_id)
+where Commission_pct IS NOT NULL
+/*No change in output if LEFT ORDER JOIN is used in place of LEFT JOIN as they perform the same function here*/
+
+/*LAB-Week 04 (Lecture 2)
+Activity 01:
+Write a query to display the last name, job, department number, and department name
+for all employees who work in Toronto.*/
+
+SELECT Last_Name, Jobs.job_id AS 'Job', Employees.Department_id AS 'Department Number', Departments.Department_Name
+FROM Employees
+JOIN Departments
+ON (Employees.Department_id=Departments.Department_id)
+JOIN Jobs
+ON (Employees.Job_Id=Jobs.job_id)
+JOIN Locations
+ON (Departments.Location_id=Locations.Location_id)
+WHERE City LIKE 'Toronto'
+
+/*Activity 02:
+Display the last name, salary, and commission for all employees who earn
+commissions. Sort data in descending order of salary and commissions.Title.*/
+
+SELECT Last_Name, Salary, Commission_pct, job_title as 'Title'
+FROM Employees
+RIGHT JOIN Jobs 
+ON (Employees.Job_Id=Jobs.job_id)
+WHERE Commission_pct IS NOT NULL
+ORDER BY Salary DESC, Commission_pct DESC
+/*Only RIGHT JOIN can also be used in place of RIGHT OUTER JOIN as it gives the same output*/
+
+/*Activity 03:
+Display the employee last name and employee number along with their manager’s last
+name and manager number. Label the columns Employee, Emp#, Manager, and Mgr#,
+respectively.*/
+
+SELECT E.Last_Name AS 'Employee', E.Employee_Id AS 'Emp#', M.Last_Name AS 'Manager', M.Employee_Id AS 'Mng#'
+FROM Employees E, Employees M
+WHERE E.Manager_id=M.Employee_Id
+ORDER BY M.Employee_Id
+/*Will match with the Employee's manager id with the manager's employee id, and select if matches*/
+
+
+
+
+
+
+
+
+
+
