@@ -1,83 +1,73 @@
-Use employee_information_w2
-GO
+select First_Name, Department_Name, 
+Employees.Employee_Id, Departments.Department_id from dbo.Employees
+join dbo.Departments
+on (dbo.Employees.Employee_Id = dbo.Departments.Department_id)
 
-select Employee_Id, First_Name, Last_Name, Salary
-from dbo.Employees
-where Employee_Id > 149
+--renaming of instace needed when we join same tables with each other
 
-select Employee_Id, First_Name, Last_Name, Salary
-from dbo.Employees
-where Employee_Id = 149
+select E.First_name as 'Employe_Name', M.First_name as
+'Manager Name'
+from dbo.Employees E, dbo.Employees M
+where E.Employee_Id = M.Manager_id
+--same table joining
+--or equal join
+select concat(E.First_name,  ' is manager of ', M.First_name)
+'Manager Name'
+from dbo.Employees E, dbo.Employees M
+where E.Employee_Id = M.Manager_id
 
-select Employee_Id, First_Name, Last_Name, Salary
-from dbo.Employees
-where Employee_Id >= 149
+--outer join: Accept Null value, if there is o relation return it 
+--with NULL value
+--Left order join, if there is no match then left table columns
+--will stay and right column will be nULL
+--Right order join: if there is no match then, right table column
+--will stay but left one will be NULL
 
-select Employee_Id, First_Name, Last_Name, Salary
-from dbo.Employees
-where Employee_Id <> 149
--- <> is equivalent to != (Not equal to)
+create table Emp
+(
+   E_ID nvarchar(100), 
+   D_ID nvarchar(100), 
+)
 
-select Employee_Id, First_Name, Last_Name, Salary
-from dbo.Employees
-where Employee_Id >= 149
-or --satisfies all
-Employee_Id <= 200
+create table DEPT
+(
+    E_ID nvarchar(100), 
+	I_ID nvarchar(100)
+)
 
-select Employee_Id, First_Name, Last_Name, Salary
-from dbo.Employees
-where Employee_Id >= 149
-and --satisifies only conditioned range
-Employee_Id <= 200
+create table LOC
+(
+  L_ID nvarchar(100),
+  L_NAME nvarchar(100)
+)
 
-select Employee_Id, First_Name, Last_Name, Salary
-from dbo.Employees
-where Employee_Id between 149 and 200
---same as inclusive >= and <=
+insert into dbo.DEPT values
+('A','X'), ('D','Y'), ('E','C')
+insert into dbo.LOC values
+('X','Dhaka'), ('B','Rajshahi'), ('S','Chattogram')
 
-select Employee_Id, First_Name, Last_Name, Salary
-from dbo.Employees
-where Employee_Id in (101, 102, 174)
+select * from dbo.Emp
+Left join dbo.DEPT
+on(dbo.Emp.D_ID=dbo.DEPT.I_ID)
 
-select Department_id, Employee_Id, First_Name, Phone_Number
-from dbo.Employees
-where Phone_Number like '__.____.______' 
-select * from dbo.Employees
+select * from dbo.Emp
+Right join dbo.DEPT
+on(dbo.Emp.D_ID=dbo.DEPT.I_ID)
 
-select Employee_Id, First_Name, Last_Name, Salary, Commission_pct
-from dbo.Employees
-where Commission_pct is NOT NULL
+select * from dbo.Emp
+Left join dbo.DEPT
+on(dbo.Emp.D_ID=dbo.DEPT.I_ID)
+Right join dbo.LOC
+on(dbo.LOC.L_ID=dbo.DEPT.I_ID)
 
-select Employee_Id, First_Name, Last_Name, Salary
-from dbo.Employees
-where Employee_Id not between 100 and 104
-order by First_Name, Salary
+--full order join: Union
+select * from dbo.Emp
+Left join dbo.DEPT
+on(dbo.Emp.D_ID=dbo.DEPT.I_ID)
 
-select Department_id, Employee_Id, First_Name
-from dbo.Employees
-order by Department_id, Employee_Id desc, First_Name
+union
+select * from dbo.Emp
+Right join dbo.LOC
+on(dbo.LOC.L_ID=dbo.DEPT.E_ID)
 
-select Department_id, Employee_Id, First_Name
-from dbo.Employees
-where First_Name like '%n%r'
-
-select Department_id, Employee_Id, First_Name
-from dbo.Employees
-where First_Name like '_r%'
---has min letters w and second index r
-
-select Department_id, Employee_Id, First_Name
-from dbo.Employees
-where First_Name like '_r_%'
--- has 2 other syllables other than r and length is not defined
-
-select Department_id, Employee_Id, First_Name
-from dbo.Employees
-where First_Name like '_$_%' escape '_'
--- here underscore is used as special character other than empty spaces.
--- so excape is used to mention the change of use. 
--- we use $ or / or any other character which is least used 
-
-select Department_id, Employee_Id, First_Name
-from dbo.Employees
-where salary > 5000 and First_Name like '_r_%'
+--union can be done by full order join
