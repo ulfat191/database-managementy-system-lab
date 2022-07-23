@@ -1,0 +1,45 @@
+use employee_information_w2
+go
+/*LAB-Week 05 (Lecture 1)
+Activity 01:
+Display the highest, lowest, sum, and average salary of all employees. Label the columns
+Maximum, Minimum, Sum, and Average, respectively. Round your results to the nearest whole
+number.*/
+select CEILING(MAX(Salary)) as 'Maximum', CEILING(min(Salary)) 'Minimum', CEILING(sum(Salary)) 'Sum', CEILING(avg(Salary)) as 'Average'
+from Employees
+
+/*Activity 02:
+display the minimum, maximum, sum, and average salary for
+each job type*/
+select Jobs.job_Id, max(max_salary) as 'Maximum', min(min_salary) as 'Minimum', sum(Salary) as 'Sum', avg(salary) as 'Average'
+from Employees, Jobs
+where Employees.Job_Id=Jobs.job_id
+group by Jobs.job_id
+
+
+/*LAB-Week 05 (Lecture 2)
+Activity 01:
+Write a query to display the number of people with the same job.*/
+select Job_Id as 'JOB_ID', count(Job_Id) as 'COUNT(*)'
+from Employees
+group by Job_Id
+
+/*Activity 02:
+Display the manager number and the salary of the lowest paid employee for that manager.
+Exclude anyone whose manager is not known. Exclude any groups where the minimum
+salary is $6,000 or less. Sort the output in descending order of salary.*/
+select Manager_id as 'MANAGER_ID', min(Salary) as 'SALARY(MIN)'
+from Employees
+group by Manager_id
+having Manager_id is not null and min(Salary)>6000
+order by min(Salary) desc
+
+/*Home Work:
+Write a query to display each department’s name, location, number of employees, and the
+average salary for all employees in that department. Label the columns Name, Location,
+Number of People, and Salary, respectively. Round the average salary to two decimal places.*/
+select Department_Name as 'Name', Location_id as 'Location', count(Job_Id) as 'Number of People', ROUND(avg(Salary), 2) as 'Salary'
+from Departments left outer join Employees 
+on Employees.Department_id=Departments.Department_id 
+group by Department_Name, Location_id
+
