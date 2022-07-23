@@ -1,0 +1,40 @@
+use CSE311L
+go
+
+/*LAB-Week 06 (Lecture 1)
+Activity 01:
+Write a query to display the last name and hire date of any employee in the same department
+as Zlotkey. Exclude Zlotkey.*/
+select Last_Name as 'LAST_NAME', Hire_Date 'HIRE_DATE'
+from Employees
+where Department_id=(select Department_id
+from Employees
+where Last_Name like 'Zlotkey')
+and Manager_id!=100
+
+/*Activity 02:
+Create a query to display the employee numbers and last names of all employees who earn more
+than the average salary. Sort the results in ascending order of salary.*/
+select Employee_Id as 'EMPLOYEE_ID', Last_Name as 'LAST_NAME', Salary as 'SALARY'
+from Employees
+where Salary>(select avg(Salary) 
+from Employees)
+order by Salary 
+
+/*LAB-Week 06 (Lecture 2) 
+Activity 01:
+Display the last name and salary of every employee who reports to King. */
+select Last_Name as 'LAST_NAME', Salary as 'SALARY'
+from Employees
+where Manager_id=100
+
+/*Activity 02:
+Write a query to display the employee numbers, last names, and salaries of all employees who
+earn more than the average salary and who work in a department with any employee with a u in
+their name.*/
+select Employee_Id as 'EMPLOYEE_ID', Last_Name as 'LAST_NAME', Salary as 'SALARY'
+from Employees
+where Salary>(select avg(Salary)
+from Employees)
+and Last_Name like '%u%'
+
