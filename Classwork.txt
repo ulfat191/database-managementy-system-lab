@@ -1,73 +1,59 @@
-select First_Name, Department_Name, 
-Employees.Employee_Id, Departments.Department_id from dbo.Employees
-join dbo.Departments
-on (dbo.Employees.Employee_Id = dbo.Departments.Department_id)
+use employee_information_w2
+GO
 
---renaming of instace needed when we join same tables with each other
+--grouping or aggregate functions
+SELECT MAX(Salary) AS 'Max Salary', MIN(Salary) AS 'Min Salary'
+FROM Employees
 
-select E.First_name as 'Employe_Name', M.First_name as
-'Manager Name'
-from dbo.Employees E, dbo.Employees M
-where E.Employee_Id = M.Manager_id
---same table joining
---or equal join
-select concat(E.First_name,  ' is manager of ', M.First_name)
-'Manager Name'
-from dbo.Employees E, dbo.Employees M
-where E.Employee_Id = M.Manager_id
+SELECT MAX(Salary), MIN(Salary)
+FROM Employees
+GROUP BY Department_id
 
---outer join: Accept Null value, if there is o relation return it 
---with NULL value
---Left order join, if there is no match then left table columns
---will stay and right column will be nULL
---Right order join: if there is no match then, right table column
---will stay but left one will be NULL
+SELECT Department_id, MAX(Salary), MIN(Salary), COUNT(*)
+FROM Employees
+GROUP BY Department_id
+/*any other attribute will show if only used before aggregate functions*/
+/*wrong output is shown as same department id can have multiple people*/
+/*if we use any other function than the grouping clause it will return the first one only*/
 
-create table Emp
-(
-   E_ID nvarchar(100), 
-   D_ID nvarchar(100), 
-)
+SELECT Department_id, COUNT(*), ROUND(AVG(Salary), 2) AS 'Average Salary', ROUND(SUM(Salary), 2) AS 'Total Salary'
+FROM Employees
+GROUP BY Department_id
 
-create table DEPT
-(
-    E_ID nvarchar(100), 
-	I_ID nvarchar(100)
-)
+SELECT Department_id, COUNT(*), CEILING(AVG(Salary)) AS 'Average Salary', ROUND(SUM(Salary), 2) AS 'Total Salary'
+FROM Employees
+GROUP BY Department_id
 
-create table LOC
-(
-  L_ID nvarchar(100),
-  L_NAME nvarchar(100)
-)
+SELECT Department_id, COUNT(*), FLOOR(AVG(Salary)) AS 'Average Salary', ROUND(SUM(Salary), 2) AS 'Total Salary'
+FROM Employees
+GROUP BY Department_id
 
-insert into dbo.DEPT values
-('A','X'), ('D','Y'), ('E','C')
-insert into dbo.LOC values
-('X','Dhaka'), ('B','Rajshahi'), ('S','Chattogram')
+SELECT Department_id, Job_Id, COUNT(Employee_Id) AS 'Total Employees', COUNT(Commission_pct) AS 'Total Commission Gainers'
+FROM Employees
+GROUP BY Department_id, Job_Id--will show in evey group 
+/*Count function omits null values if used in invidual tables, but if given all(*) it will also count NULL */
+/*Since count only does with primary key, primary key of a relation can never be NULL*/
 
-select * from dbo.Emp
-Left join dbo.DEPT
-on(dbo.Emp.D_ID=dbo.DEPT.I_ID)
+SELECT  COUNT(Employee_Id) AS 'Total Employees', COUNT(Commission_pct) AS 'Total Commission Gainers'
+FROM Employees
 
-select * from dbo.Emp
-Right join dbo.DEPT
-on(dbo.Emp.D_ID=dbo.DEPT.I_ID)
+SELECT E.Department_id, Job_Id, MAX(E.Salary), MIN(E.Salary), COUNT(*)
+FROM Employees E, Departments D
+WHERE E.Department_id=D.Department_id
+AND
+E.Job_Id LIKE '%SA%'
+GROUP BY E.Department_id, Job_Id
+HAVING MAX(Salary)>10000
+--ORDER BY Department_id
+ORDER BY MAX(Salary)
+--use the ones from select clause
 
-select * from dbo.Emp
-Left join dbo.DEPT
-on(dbo.Emp.D_ID=dbo.DEPT.I_ID)
-Right join dbo.LOC
-on(dbo.LOC.L_ID=dbo.DEPT.I_ID)
 
---full order join: Union
-select * from dbo.Emp
-Left join dbo.DEPT
-on(dbo.Emp.D_ID=dbo.DEPT.I_ID)
 
-union
-select * from dbo.Emp
-Right join dbo.LOC
-on(dbo.LOC.L_ID=dbo.DEPT.E_ID)
 
---union can be done by full order join
+
+
+
+
+
+
